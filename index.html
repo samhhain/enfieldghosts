@@ -1,1 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ghost Stories of Enfield | Coming Soon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 50%, #0d0d1a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #b8c6db;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .fog-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .fog-layer {
+            position: absolute;
+            bottom: -100px;
+            left: -50%;
+            width: 200%;
+            height: 200px;
+            background: transparent;
+            opacity: 0.4;
+            filter: blur(20px);
+        }
+
+        .fog-layer::before,
+        .fog-layer::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-repeat: repeat-x;
+            background-size: 50% 100%;
+            animation: fogMove linear infinite;
+        }
+
+        .fog-layer::before {
+            background-image: 
+                radial-gradient(ellipse at 30% 50%, rgba(167, 139, 245, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(109, 74, 255, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 30%, rgba(139, 125, 174, 0.2) 0%, transparent 60%);
+        }
+
+        .fog-layer::after {
+            background-image: 
+                radial-gradient(ellipse at 20% 70%, rgba(109, 74, 255, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 60%, rgba(167, 139, 245, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(139, 125, 174, 0.18) 0%, transparent 60%);
+            animation-delay: -5s;
+        }
+
+        .fog-layer:nth-child(1) { animation-duration: 20s; opacity: 0.5; transform: translateY(-30px); }
+        .fog-layer:nth-child(2) { animation-duration: 25s; opacity: 0.4; transform: translateY(-60px); }
+        .fog-layer:nth-child(3) { animation-duration: 30s; opacity: 0.3; transform: translateY(0px); }
+        .fog-layer:nth-child(4) { animation-duration: 22s; opacity: 0.35; transform: translateY(-45px); animation-delay: -10s; }
+
+        @keyframes fogMove {
+            0% { transform: translateX(0) scaleX(1); }
+            50% { transform: translateX(10%) scaleX(1.02); }
+            100% { transform: translateX(0) scaleX(1); }
+        }
+
+        /* Upper mist */
+        .mist-top {
+            position: absolute;
+            top: -150px;
+            left: -25%;
+            width: 150%;
+            height: 300px;
+            background: transparent;
+            opacity: 0.15;
+            filter: blur(30px);
+        }
+
+        .mist-top::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(167, 139, 245, 0.15) 0%, transparent 60%);
+            animation: mistDrift 35s ease-in-out infinite;
+        }
+
+        @keyframes mistDrift {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(-5%) rotate(2deg); }
+            50% { transform: translateX(5%) rotate(-1deg); }
+            75% { transform: translateX(-3%) rotate(1deg); }
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: #e4e4e4;
+            text-shadow: 0 0 20px rgba(174, 134, 255, 0.5);
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            animation: flicker 4s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 90%, 100% { opacity: 1; text-shadow: 0 0 20px rgba(174, 134, 255, 0.5); }
+            93% { opacity: 0.7; text-shadow: 0 0 10px rgba(174, 134, 255, 0.3); }
+            96% { opacity: 1; text-shadow: 0 0 25px rgba(174, 134, 255, 0.6); }
+            98% { opacity: 0.6; text-shadow: 0 0 5px rgba(174, 134, 255, 0.2); }
+        }
+
+        .subtitle {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #8b7dae;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .ghost-icon {
+            width: 80px;
+            height: 80px;
+            margin: 2rem auto;
+            fill: none;
+            stroke: #a78bf5;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 15px rgba(167, 139, 245, 0.6));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .message {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 3px solid #6d4aff;
+            margin: 2rem 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .message p {
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        /* Countdown Styles */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: rgba(26, 26, 46, 0.9);
+            border: 1px solid rgba(109, 74, 255, 0.4);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            min-width: 80px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(109, 74, 255, 0.3);
+        }
+
+        .countdown-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #a78bf5;
+            text-shadow: 0 0 10px rgba(167, 139, 245, 0.8);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            color: #6b6b8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid transparent;
+            border-top-color: #6d4aff;
+            border-radius: 50%;
+            margin: 1.5rem auto;
+            animation: spin 1.5s linear infinite;
+            filter: drop-shadow(0 0 8px rgba(109, 74, 255, 0.7));
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #5a5a7d;
+            letter-spacing: 1px;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #6d4aff 0%, #4a2daa 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(167, 139, 245, 0.5);
+        }
+
+        .contact-btn:hover {
+            background: linear-gradient(135deg, #7d5aff 0%, #5a3dba 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(167, 139, 245, 0.5);
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(167, 139, 245, 0.6);
+            border-radius: 50%;
+            animation: rise 8s ease-in infinite;
+        }
+
+        @keyframes rise {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-10vh) scale(1);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .countdown {
+                gap: 0.5rem;
+            }
+            
+            .countdown-item {
+                padding: 0.8rem 0.6rem;
+                min-width: 65px;
+            }
+            
+            .countdown-number {
+                font-size: 1.5rem;
+            }
+            
+            .countdown-label {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Multi-layer fog effects -->
+    <div class="fog-container">
+        <div class="mist-top"></div>
+        <div class="fog-layer"></div>
+        <div class="fog-layer"></div>
+        <div class="fog-layer"></div>
+        <div class="fog-layer"></div>
+    </div>
+
+    <!-- Rising particles -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <!-- Simple Ghost SVG Icon -->
+        <svg class="ghost-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 10 C30 10 15 25 15 45 L15 85 L20 80 L25 85 L30 80 L35 85 L40 80 L45 85 L50 80 L55 85 L60 80 L65 85 L70 80 L75 85 L80 80 L85 85 L85 45 C85 25 70 10 50 10 Z"/>
+            <circle cx="35" cy="40" r="5" fill="#1a1a2e"/>
+            <circle cx="65" cy="40" r="5" fill="#1a1a2e"/>
+            <ellipse cx="50" cy="55" rx="8" ry="5" fill="#1a1a2e"/>
+        </svg>
+
+        <h1>The Ghost Stories<br>of Enfield</h1>
+        
+        <p class="subtitle">Where shadows whisper and secrets linger...</p>
+
+        <div class="message">
+            <p>We're preparing something chilling.<br>
+            Dark tales are being unearthed,<br>
+            and supernatural voices are awakening.</p>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">00</span>
+                <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">00</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutes">00</span>
+                <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="seconds">00</span>
+                <span class="countdown-label">Seconds</span>
+            </div>
+        </div>
+
+        <p style="font-size: 0.85rem; color: #8b7dae;">Something sinister arrives soon</p>
+
+        <a href="mailto:" class="contact-btn">Notify Me When Live</a>
+
+        <p class="footer-note">© The Ghost Stories of Enfield | Est. 2026</p>
+    </div>
+
+    <script>
+        // Set your launch date here (update as needed)
+        const launchDate = new Date('July 7, 2026 00:00:00').getTime();
+
+        // Update countdown every second
+        const countdownTimer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = launchDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownTimer);
+                document.getElementById('countdown').innerHTML = '<p style="color: #a78bf5; font-size: 1.2rem;">We\'re LIVE!</p>';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }, 1000);
+
+        // Generate floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+                
+                // Vary colors slightly
+                const hue = 240 + Math.random() * 60; // Purple range
+                particle.style.background = `rgba(${hue}, ${100 + Math.random() * 50}, 245, ${0.3 + Math.random() * 0.4})`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Add subtle mouse parallax effect on container
+        document.addEventListener('mousemove', (e) => {
+            const container = document.querySelector('.container');
+            const x = (window.innerWidth - e.pageX) / 100;
+            const y = (window.innerHeight - e.pageY) / 100;
+            container.style.transform = `translate(${x}px, ${y}px)`;
+        });
+    </script>
+</body>
+</html>
